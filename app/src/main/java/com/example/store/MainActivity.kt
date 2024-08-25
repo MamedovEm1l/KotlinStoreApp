@@ -31,18 +31,26 @@ class MainActivity : AppCompatActivity() {
             val email = userEmail.text.toString().trim()
             val pass = userPass.text.toString().trim()
 
-            if (login.isEmpty() || email.isEmpty() || pass.isEmpty())
+            if (login.isEmpty() || email.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Не все поля заполнены", Toast.LENGTH_LONG).show()
-            else{
-                val user = User(login, email, pass, 0)
-
+            } else {
                 val db = DBHelper(this, null)
-                db.addUser(user)
-                Toast.makeText(this, "Пользователь $login добавлен", Toast.LENGTH_LONG).show()
+                //db.onUpgrade(db.writableDatabase, 1, 1)
 
-                userLogin.text.clear()
-                userEmail.text.clear()
-                userPass.text.clear()
+                // Проверяем, существует ли пользователь с таким логином
+                val userExists = db.isAuth(login)
+
+                if (userExists) {
+                    Toast.makeText(this, "Пользователь $login уже существует", Toast.LENGTH_LONG).show()
+                } else {
+                    val user = User(login, email, pass, 0)
+                    db.addUser(user)
+                    Toast.makeText(this, "Пользователь $login добавлен", Toast.LENGTH_LONG).show()
+
+                    userLogin.text.clear()
+                    userEmail.text.clear()
+                    userPass.text.clear()
+                }
             }
         }
 

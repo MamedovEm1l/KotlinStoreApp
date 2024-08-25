@@ -3,6 +3,7 @@ package com.example.store
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -35,17 +36,15 @@ class AuthActivity : AppCompatActivity() {
 
                 if(isAuth){
                     Toast.makeText(this, "Пользователь $login авторизован", Toast.LENGTH_LONG).show()
-                    userLogin.text.clear()
-                    userPass.text.clear()
+
                     db.setCounter(login)
-                    val intent2 = Intent(this, Statistics::class.java)
-                    intent2.putExtra("DB", db.getCounter())
-                    val intent = Intent(this, ItemsActivity::class.java)
+                    Log.e(db.getCounter(),"Dbbbbb")
+                    val intent = Intent(this, Statistics::class.java)
+                    intent.putExtra(db.getCounter(),"DB")
                     startActivity(intent)
 
                 }else
                     Toast.makeText(this, "Пользователь $login НЕ авторизован", Toast.LENGTH_LONG).show()
-
                 userLogin.text.clear()
                 userPass.text.clear()
             }
